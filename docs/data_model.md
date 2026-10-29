@@ -23,7 +23,7 @@ erDiagram
 
     SEQUENCES {
         ObjectId _id
-        string original_id "PDB..., único, indexado"
+        string original_id "Identificador original del FASTA, único".
         string te_class "clase del ELEMENTO TRANSPONIBLE"
         string te_order "orden del ELEMENTO TRANSPONIBLE"
         string te_superfamily
@@ -62,7 +62,7 @@ solo para el cruce FASTA↔CSV durante la carga; no es un campo "de negocio".
 ### `sequences` (~239,946 documentos)
 
 Un elemento transponible por documento. Contiene:
-- Identidad: `original_id` (el `PDB...` del FASTA).
+- Identidad: `original_id` (el `identificador original del FASTA...` del FASTA).
 - Clasificación del TE: `te_class`, `te_order`, `te_superfamily`.
 - Vínculo a la especie: `species_id` (referencia) + `species_name` (copia denormalizada).
 - La secuencia de nucleótidos (`sequence`, siempre en mayúsculas).
@@ -138,7 +138,8 @@ normalización se omiten de la carga y se reportan (no se insertan con
 | `kingdom` | species | Agrupar/filtrar por reino (consultas 3, 6, 7, 13) |
 | `original_id` (único) | sequences | Búsqueda por identificador (consulta 8), unicidad |
 | `species_id` | sequences | `$lookup` con species (consulta 12), conteos por especie (2, 4) |
-| `(te_class, te_order, te_superfamily)` compuesto | sequences | Conteos por clasificación (consulta 1), filtros de biblioteca (9, 10, 11) |
+| `(te_class, te_order, te_superfamily)` compuesto | sequences | Conteos por clasificación (consulta 1) |
+| `(species_name, te_superfamily)` compuesto | sequences | Consulta 2 (una especie), consulta 9 y biblioteca de una especie (consulta 10) |
 
 **Validación de esquema (`$jsonSchema`)**
 Se aplica a `species` y `sequences` (los datos "núcleo" del proyecto): campos

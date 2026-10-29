@@ -34,7 +34,7 @@
 
 \title[Modelo documental en MongoDB para elementos transponibles]{Un modelo de datos documental en MongoDB para integrar secuencias, taxonomía y perfiles de k-mers de elementos transponibles a través de reinos}
 
-\author*[1]{\fnm{Mateo} \sur{Quintero Morales}}\email{mateoq152006@gmail.com}
+\author*[1]{\fnm{Mateo} \sur{Quintero Morales}}\email{mateo.quinterom@autonoma.edu.co}
 \equalcont{Estos autores contribuyeron por igual a este trabajo.}
 
 \author*[1]{\fnm{Tomás} \sur{Restrepo Chica}}\email{tomas.restrepoc@autonoma.edu.co}
@@ -215,7 +215,27 @@ descrito en \nameref{sec:experimentos}.}
 \label{fig:modelo}
 \end{figure}
 
-Dos decisiones de diseño merecen justificación explícita:
+Cuatro decisiones de diseño merecen justificación explícita:
+
+\textbf{Dos colecciones, no una.} Se consideró una única colección de
+\texttt{species} con los TEs embebidos como arreglo dentro de cada especie, lo
+que evitaría cualquier cruce. Se descartó por el límite de 16~MB por documento
+de MongoDB: en el experimento, el tamaño lógico medio de una secuencia con sus
+k-mers fue de unos 38~KB (1128~MB para 30\,000 secuencias), de modo que los
+1627 TEs de \emph{Malus domestica}, la especie con más elementos, sumarían
+alrededor de 61~MB, casi cuatro veces el límite. Separar \texttt{species} y
+\texttt{sequences} evita ese tope y permite consultar secuencias sin cargar la
+especie completa.
+
+\textbf{Dos jerarquías, campos planos con nombres explícitos.} La
+clasificación del TE (Clase/Orden/Superfamilia) y la taxonomía de la especie
+(Reino~$\rightarrow$~Especie) comparten nombres de rango. Se consideró
+agruparlas en un subdocumento genérico del tipo
+\texttt{classification: \{class, order, \ldots\}}, pero se descartó porque
+podría usarse por error para cualquiera de las dos jerarquías. Se usaron campos
+planos distintos (\texttt{te\_class}, \texttt{te\_order},
+\texttt{te\_superfamily} frente a \texttt{taxo\_class}, \texttt{taxo\_order}), lo que además
+permite indexarlos directamente.
 
 \textbf{Referencia, no embebido, entre secuencia y especie.} Se consideró
 embeber la taxonomía completa en cada secuencia, pero se descartó: la
@@ -255,7 +275,8 @@ Tabla~\ref{tab:indices}.
 \texttt{kingdom} & species & Agrupar/filtrar por reino \\
 \texttt{original\_id} (único) & sequences & Búsqueda por identificador; unicidad \\
 \texttt{species\_id} & sequences & \texttt{\$lookup} con species; conteos por especie \\
-(\texttt{te\_class}, \texttt{te\_order}, \texttt{te\_superfamily}) & sequences & Conteos por clasificación; filtros de biblioteca \\
+(\texttt{te\_class}, \texttt{te\_order}, \texttt{te\_superfamily}) & sequences & Conteos por clasificación (consulta~1) \\
+(\texttt{species\_name}, \texttt{te\_superfamily}) & sequences & Consulta~2 (una especie), consulta~9 y biblioteca de una especie (consulta~10) \\
 \botrule
 \end{tabular*}
 \label{tab:indices}
@@ -263,7 +284,7 @@ Tabla~\ref{tab:indices}.
 
 \subsection{Pipeline en Python}
 
-El pipeline (Python 3.14, \texttt{pymongo}, \texttt{biopython}~\cite{cock2009biopython},
+El pipeline (Python 3.14, \texttt{pymongo},
 \texttt{pandas}) procesa el FASTA en \emph{streaming} línea por línea (sin
 cargarlo completo en memoria, dado su tamaño de $\sim$990~MB), valida cada
 encabezado contra el patrón esperado, limpia el CSV conservando solo las nueve
@@ -328,17 +349,17 @@ más abundante (119\,368), seguido de LINE (68\,382).
 \toprule
 Clase & Orden & Cantidad \\
 \midrule
-CLASSI  & LTR       & 119\,368 \\
-CLASSI  & LINE      & 68\,382 \\
-CLASSII & TIR       & 36\,471 \\
-CLASSII & HELITRON  & 5\,075 \\
-CLASSI  & MITE      & 3\,456 \\
-CLASSI  & SINE      & 3\,634 \\
-CLASSI  & DIRS      & 2\,933 \\
-CLASSI  & PLE       & 344 \\
-CLASSII & CRYPTON   & 112 \\
-CLASSII & RETROPOSON& 113 \\
-CLASSII & MAVERICK  & 58 \\
+CLASSI  & LTR        & 119\,368 \\
+CLASSI  & LINE       & 68\,382 \\
+CLASSII & TIR        & 36\,471 \\
+CLASSII & HELITRON   & 5\,075 \\
+CLASSI  & SINE       & 3\,634 \\
+CLASSII & MITE       & 3\,456 \\
+CLASSI  & DIRS       & 2\,933 \\
+CLASSI  & PLE        & 344 \\
+CLASSI  & RETROPOSON & 113 \\
+CLASSII & CRYPTON    & 112 \\
+CLASSII & MAVERICK   & 58 \\
 \midrule
 \textbf{Total CLASSI}  & & \textbf{194\,774} \\
 Total CLASSII & & \textbf{45\,172} \\
@@ -433,7 +454,7 @@ TT (234) como las más frecuentes.
 \includegraphics[width=0.95\textwidth]{figures/fig4_heatmap_kmers2.png}
 \caption{\textbf{Frecuencia relativa promedio de 2-mers por orden de TE.} Cada
 celda es el promedio, sobre todas las secuencias de ese orden, del conteo de
-un dinucleótido dividido entre el total de 2-mers de la secuencia.}
+un dinucleótido dividido entre $longitud-1$ (en las secuencias con N, los 2-mers que contienen N no se cuentan).}
 \label{fig:heatmap}
 \end{figure}
 
@@ -626,10 +647,10 @@ documenta cómo descargar los datos y reconstruir la base desde cero; el
 repositorio no redistribuye los archivos de datos originales.
 \begin{itemize}
 \item Nombre del proyecto: PanTEon-Mongo
-\item Página del proyecto: \url{https://github.com/JuanGomez507/panteon-bd2-elementos-transponibles}
+\item Página del proyecto: \url{https://github.com/Teoqm/panteon-bd2-elementos-transponibles}
 \item Sistema operativo: independiente de la plataforma (probado en Windows 11)
 \item Lenguaje de programación: Python
-\item Otros requisitos: Python 3.11 o superior, MongoDB Community Server, pymongo, pandas, biopython, numpy, matplotlib, seaborn, jupyter
+\item Otros requisitos: Python 3.11 o superior, MongoDB Community Server, pymongo, pandas, numpy, matplotlib, seaborn, jupyter
 \item Licencia: no especificada
 \item Restricciones de uso para no académicos: ninguna
 \end{itemize}

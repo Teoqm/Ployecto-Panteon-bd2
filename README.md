@@ -54,7 +54,7 @@ y ubícalos directamente en la raíz del proyecto:
 ### Requisitos previos del sistema
 
 - Intérprete de Python 3.11+ (probado con Python 3.14).
-- Servidor de MongoDB Community Server corriendo en local.
+- Servidor de MongoDB Community Server 7.0 o superior, corriendo en local
 - Dirección por defecto: localhost:27017
 
 ---
@@ -63,10 +63,11 @@ y ubícalos directamente en la raíz del proyecto:
 
 Abre tu terminal de comandos e ingresa los siguientes pasos:
 
-git clone <url-del-repo>
+git clone https://github.com/Teoqm/panteon-bd2-elementos-transponibles.
 cd panteon-bd2-elementos-transponibles
 python -m venv .venv
-.venv/Scripts/activate        # Comando para Windows (PowerShell / CMD)
+.venv\Scripts\Activate.ps1      # Windows (PowerShell)
+source .venv/bin/activate       # Linux / macOS    
 pip install -r requirements.txt
 
 ---
@@ -162,4 +163,4 @@ tectonic docs/article/article.tex   # O mediante pdflatex + bibtex
 - [x] Autores y correos en el artículo
 - [x] Respaldo de la base de datos — opción "script que la regenere"
       (`setup_db.py` + `load_species.py` + `load_sequences.py`); no se incluye un
-      `mongodump` en el repo por su tamaño (~4 GB)
+      `mongodump` en el repo 

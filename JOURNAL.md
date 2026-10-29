@@ -6,7 +6,7 @@ Elegimos **BMC Bioinformatics** (BioMed Central, Springer Nature) en la modalida
 
 **Por qué la elegimos:** Es una revista de acceso abierto bastante conocida en bioinformática que publica herramientas y modelos para datos biológicos. Su guía de autores es pública y clara. Escogimos *Research article* en lugar de *Database article* porque la misma guía aclara que si el trabajo incluye experimentos propios (como las pruebas de rendimiento que hicimos midiendo el almacenamiento), debe enviarse como un artículo de investigación normal.
 
-Inicialmente la plantilla estaba planteada para *PLOS Computational Biology*, pero decidimos pasarla a BMC Bioinformatics para tener un formato diferente al de los demás grupos.
+Inicialmente la plantilla estaba planteada para PLOS Computational Biology, pero se cambió a BMC Bioinformatics porque su guía de Research article encaja con un trabajo que incluye experimentos propios, y su plantilla oficial (sn-jnl) está disponible en LaTeX.
 
 **Enlaces a las guías consultadas:**
 - Guía general: https://link.springer.com/journal/12859/submission-guidelines

@@ -63,7 +63,12 @@ md("""## 2. Lectura y validación del FASTA (streaming)
 
 El archivo (~990 MB) se recorre línea por línea, sin cargarlo completo en
 memoria. Se valida el formato del encabezado, se detectan IDs duplicados y se
-revisa el alfabeto de nucleótidos usado.""")
+revisa el alfabeto de nucleótidos usado.
+
+Aquí se valida la muestra; el recorrido completo del archivo está en
+`scripts/explore_fasta.py` y sus resultados en `docs/data_quality_notes.md`.
+""")
+
 code("""import re
 from itertools import islice
 
@@ -92,6 +97,25 @@ print("Registros en la muestra:", len(sample))
 
 bad_headers = [h for h, s in sample if not HEADER_RE.match(h)]
 print("Encabezados invalidos en la muestra:", len(bad_headers))""")
+
+code("""from collections import Counter
+
+chars, lengths, ids = Counter(), [], Counter()
+n_with_n = 0
+for header, raw_seq in sample:
+    seq = raw_seq.upper()
+    chars.update(seq)
+    lengths.append(len(seq))
+    m = HEADER_RE.match(header)
+    if m:
+        ids[m.group(1)] += 1
+    n_with_n += "N" in seq
+
+print("Caracteres encontrados:", dict(chars))
+print("Caracteres fuera de A/C/G/T/N:", {c: n for c, n in chars.items() if c not in "ACGTN"})
+print("Secuencias con al menos una N:", n_with_n, "de", len(sample))
+print("Longitud min/max:", min(lengths), "/", max(lengths))
+print("IDs duplicados:", sum(1 for v in ids.values() if v > 1))""")
 
 # --------------------------------------------------------------------------
 md("""## 3. Cruce FASTA ↔ CSV por especie
