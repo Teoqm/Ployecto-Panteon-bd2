@@ -138,7 +138,8 @@ normalización se omiten de la carga y se reportan (no se insertan con
 | `kingdom` | species | Agrupar/filtrar por reino (consultas 3, 6, 7, 13) |
 | `original_id` (único) | sequences | Búsqueda por identificador (consulta 8), unicidad |
 | `species_id` | sequences | `$lookup` con species (consulta 12), conteos por especie (2, 4) |
-| `(te_class, te_order, te_superfamily)` compuesto | sequences | Conteos por clasificación (consulta 1), filtros de biblioteca (9, 10, 11) |
+| `(te_class, te_order, te_superfamily)` compuesto | sequences | Conteos por clasificación (consulta 1) |
+| `(species_name, te_superfamily)` compuesto | sequences | Consulta 2 (una especie), consulta 9 y biblioteca de una especie (consulta 10) |
 
 **Validación de esquema (`$jsonSchema`)**
 Se aplica a `species` y `sequences` (los datos "núcleo" del proyecto): campos

@@ -275,7 +275,8 @@ Tabla~\ref{tab:indices}.
 \texttt{kingdom} & species & Agrupar/filtrar por reino \\
 \texttt{original\_id} (único) & sequences & Búsqueda por identificador; unicidad \\
 \texttt{species\_id} & sequences & \texttt{\$lookup} con species; conteos por especie \\
-(\texttt{te\_class}, \texttt{te\_order}, \texttt{te\_superfamily}) & sequences & Conteos por clasificación; filtros de biblioteca \\
+(\texttt{te\_class}, \texttt{te\_order}, \texttt{te\_superfamily}) & sequences & Conteos por clasificación (consulta~1) \\
+(\texttt{species\_name}, \texttt{te\_superfamily}) & sequences & Consulta~2 (una especie), consulta~9 y biblioteca de una especie (consulta~10) \\
 \botrule
 \end{tabular*}
 \label{tab:indices}

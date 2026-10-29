@@ -65,7 +65,12 @@ db["sequences"].create_index([("original_id", ASCENDING)], unique=True, name="un
 db["sequences"].create_index([("species_id", ASCENDING)], name="idx_species_id")
 db["sequences"].create_index(
     [("te_class", ASCENDING), ("te_order", ASCENDING), ("te_superfamily", ASCENDING)],
-    name="idx_te_classification",
+    name="idx_te_classification", 
+)
+
+db["sequences"].create_index(
+    [("species_name", ASCENDING), ("te_superfamily", ASCENDING)],
+    name="idx_species_superfamily",
 )
 
 # --- kmer_profiles_alt (solo para el experimento de la sección 4.4) --------
