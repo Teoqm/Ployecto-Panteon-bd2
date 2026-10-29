@@ -35,5 +35,5 @@ data/backup/*.json
 data/libraries/Animalia.fasta
 data/libraries/Plantae.fasta
 
-# Respaldo mongodump completo (~4 GB, supera el limite de GitHub)
+# Respaldo mongodump completo
 data/backup/dump/
