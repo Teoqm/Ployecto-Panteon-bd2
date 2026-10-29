@@ -1,24 +1,7 @@
 Respaldo de la base de datos PanTEon-Mongo (mongodump)
-=====================================================
-
-El dump no está en el repositorio por su tamaño (GitHub no admite archivos
-de más de 100 MB). Está disponible en Google Drive:
 
 https://drive.google.com/drive/folders/1_3Jd4YnHrJ1_zf2CAygUscwjYQZVS_N7?usp=drive_link
 
-Archivo:  panteon.archive.gz
-Tamaño:   2 427 031 381 bytes (~2.26 GB)
-SHA256:   CE9322E146795A0F341D8B679F9E8B816E88708761179A411E84998F3B1DCBCB
-Contenido: base "panteon" -> species (2790), sequences (239 946), kmer_profiles_alt (0)
+Restaurar (requiere MongoDB y MongoDB Database Tools), desde la carpeta descargada:
 
-Comprobar que el archivo descargado está completo (PowerShell):
-
-    Get-FileHash panteon.archive.gz -Algorithm SHA256
-
-Restaurar (requiere MongoDB y MongoDB Database Tools):
-
-    mongorestore --gzip --archive=panteon.archive.gz
-
-Alternativa sin el dump: regenerar la base desde los datos de Zenodo con
-scripts/setup_db.py, scripts/load_species.py y scripts/load_sequences.py
-(ver README.md).
+    mongorestore --gzip --dir=<carpeta descargada>
