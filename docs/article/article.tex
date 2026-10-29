@@ -215,7 +215,27 @@ descrito en \nameref{sec:experimentos}.}
 \label{fig:modelo}
 \end{figure}
 
-Dos decisiones de diseño merecen justificación explícita:
+Cuatro decisiones de diseño merecen justificación explícita:
+
+\textbf{Dos colecciones, no una.} Se consideró una única colección de
+\texttt{species} con los TEs embebidos como arreglo dentro de cada especie, lo
+que evitaría cualquier cruce. Se descartó por el límite de 16~MB por documento
+de MongoDB: en el experimento, el tamaño lógico medio de una secuencia con sus
+k-mers fue de unos 38~KB (1128~MB para 30\,000 secuencias), de modo que los
+1627 TEs de \emph{Malus domestica}, la especie con más elementos, sumarían
+alrededor de 61~MB, casi cuatro veces el límite. Separar \texttt{species} y
+\texttt{sequences} evita ese tope y permite consultar secuencias sin cargar la
+especie completa.
+
+\textbf{Dos jerarquías, campos planos con nombres explícitos.} La
+clasificación del TE (Clase/Orden/Superfamilia) y la taxonomía de la especie
+(Reino~$\rightarrow$~Especie) comparten nombres de rango. Se consideró
+agruparlas en un subdocumento genérico del tipo
+\texttt{classification: \{class, order, \ldots\}}, pero se descartó porque
+podría usarse por error para cualquiera de las dos jerarquías. Se usaron campos
+planos distintos (\texttt{te\_class}, \texttt{te\_order},
+\texttt{te\_superfamily} frente a \texttt{taxo\_class}, \texttt{taxo\_order}), lo que además
+permite indexarlos directamente.
 
 \textbf{Referencia, no embebido, entre secuencia y especie.} Se consideró
 embeber la taxonomía completa en cada secuencia, pero se descartó: la
