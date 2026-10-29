@@ -1,6 +1,6 @@
 """Sección 4.5: visualizaciones a partir de datos leídos desde MongoDB.
 
-Paleta: formula categórica/secuencial validada (ver dataviz skill,
+Paleta: formula categórica/secuencial validada (ver paleta de colores para los reinos skill,
 references/palette.md) — azul/naranja/aqua para categorías (reinos), rampa de
 un solo tono (azul) para magnitudes (heatmap).
 """
@@ -17,7 +17,7 @@ db = client["panteon"]
 sequences = db["sequences"]
 species = db["species"]
 
-# --- paleta validada (dataviz skill) ---------------------------------------
+# --- paleta validada (paleta de colores para los reinos skill) ---------------------------------------
 INK_PRIMARY = "#0b0b0b"
 INK_SECONDARY = "#52514e"
 INK_MUTED = "#898781"
