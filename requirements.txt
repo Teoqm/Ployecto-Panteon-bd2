@@ -1,6 +1,5 @@
 pandas
 pymongo
-biopython
 numpy
 matplotlib
 seaborn
