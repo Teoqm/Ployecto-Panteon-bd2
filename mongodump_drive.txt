@@ -1,6 +1,6 @@
 Respaldo de la base de datos PanTEon-Mongo (mongodump)
 
-https://drive.google.com/drive/folders/1_3Jd4YnHrJ1_zf2CAygUscwjYQZVS_N7?usp=drive_link
+https://drive.google.com/drive/folders/15xp7Pdk6Gnl2hfDo1Fm1zRvcHJaSWgRr?usp=drive_link
 
 Restaurar (requiere MongoDB y MongoDB Database Tools), desde la carpeta descargada:
 
