@@ -23,7 +23,7 @@ erDiagram
 
     SEQUENCES {
         ObjectId _id
-        string original_id "PDB..., único, indexado"
+        string original_id "Identificador original del FASTA, único".
         string te_class "clase del ELEMENTO TRANSPONIBLE"
         string te_order "orden del ELEMENTO TRANSPONIBLE"
         string te_superfamily
@@ -62,7 +62,7 @@ solo para el cruce FASTA↔CSV durante la carga; no es un campo "de negocio".
 ### `sequences` (~239,946 documentos)
 
 Un elemento transponible por documento. Contiene:
-- Identidad: `original_id` (el `PDB...` del FASTA).
+- Identidad: `original_id` (el `identificador original del FASTA...` del FASTA).
 - Clasificación del TE: `te_class`, `te_order`, `te_superfamily`.
 - Vínculo a la especie: `species_id` (referencia) + `species_name` (copia denormalizada).
 - La secuencia de nucleótidos (`sequence`, siempre en mayúsculas).
