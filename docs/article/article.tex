@@ -11,7 +11,7 @@
 \usepackage{amsthm}%
 \usepackage{mathrsfs}%
 \usepackage[title]{appendix}%
-\usepackage{xcolor}%
+\usepackage[table]{xcolor}%
 \usepackage{textcomp}%
 \usepackage{manyfoot}%
 \usepackage{booktabs}%
@@ -29,6 +29,33 @@
 \renewcommand\tablename{Tabla}%
 \renewcommand\abstractname{Resumen}%
 \renewcommand\refname{Referencias}%
+
+% Estilo visual propio (paleta verde azulada) aplicado sobre sn-jnl: solo
+% cambia colores de títulos, leyendas, enlaces, viñetas y tablas, sin tocar
+% el formato de BMC (tamaños, márgenes, doble espacio y números de línea).
+\definecolor{teOscuro}{HTML}{0B4F6C}%
+\definecolor{teVerde}{HTML}{168C80}%
+\definecolor{teClaro}{HTML}{EAF5F3}%
+\definecolor{teGris}{HTML}{8A9BA3}%
+
+\makeatletter
+\g@addto@macro\Titlefont{\color{teOscuro}\bfseries}%
+\g@addto@macro\sectionfont{\color{teOscuro}}%
+\g@addto@macro\subsectionfont{\color{teVerde}}%
+\g@addto@macro\subsubsectionfont{\color{teVerde}}%
+\g@addto@macro\bmheadfont{\color{teVerde}}%
+\g@addto@macro\abstractheadfont{\color{teOscuro}}%
+\def\fnum@figure{{\bfseries\color{teVerde}\figurename\space\thefigure}}%
+\def\fnum@table{{\bfseries\color{teVerde}\tablename\space\thetable}}%
+\makeatother
+
+\hypersetup{citecolor=teVerde,linkcolor=teOscuro,urlcolor=teVerde}%
+\renewcommand\labelitemi{\textcolor{teVerde}{\small$\blacktriangleright$}}%
+\renewcommand\keywordname{\textcolor{teOscuro}{Palabras clave}}%
+
+% Encabezado de tabla en banda oscura y filas alternas en verde claro
+\newcommand\cab[1]{{\color{white}\bfseries #1}}%
+\newcommand\filasalternas{\rowcolors{2}{}{teClaro}}%
 
 \begin{document}
 
@@ -266,10 +293,9 @@ Tabla~\ref{tab:indices}.
 
 \begin{table}[!ht]
 \caption{\textbf{Índices del modelo de producción.}}
-\begin{tabular*}{\textwidth}{@{\extracolsep\fill}p{3.4cm}p{2.0cm}p{6.2cm}@{}}
-\toprule
-Índice & Colección & Consulta que soporta \\
-\midrule
+\filasalternas
+\begin{tabular}{@{}p{3.6cm}p{2.0cm}p{6.3cm}@{}}
+\rowcolor{teOscuro}\cab{Índice} & \cab{Colección} & \cab{Consulta que soporta} \\
 \texttt{species\_name} (único) & species & Unicidad; cruce por nombre \\
 \texttt{match\_key} & species & Cruce FASTA$\leftrightarrow$CSV durante la carga \\
 \texttt{kingdom} & species & Agrupar/filtrar por reino \\
@@ -278,7 +304,7 @@ Tabla~\ref{tab:indices}.
 (\texttt{te\_class}, \texttt{te\_order}, \texttt{te\_superfamily}) & sequences & Conteos por clasificación (consulta~1) \\
 (\texttt{species\_name}, \texttt{te\_superfamily}) & sequences & Consulta~2 (una especie), consulta~9 y biblioteca de una especie (consulta~10) \\
 \botrule
-\end{tabular*}
+\end{tabular}
 \label{tab:indices}
 \end{table}
 
@@ -345,10 +371,9 @@ más abundante (119\,368), seguido de LINE (68\,382).
 
 \begin{table}[!ht]
 \caption{\textbf{Cantidad de TEs por clase y orden (consulta 1).}}
+\filasalternas
 \begin{tabular}{@{}lrr@{}}
-\toprule
-Clase & Orden & Cantidad \\
-\midrule
+\rowcolor{teOscuro}\cab{Clase} & \cab{Orden} & \cab{Cantidad} \\
 CLASSI  & LTR        & 119\,368 \\
 CLASSI  & LINE       & 68\,382 \\
 CLASSII & TIR        & 36\,471 \\
@@ -486,10 +511,9 @@ no en encontrarlos.
 \caption{\textbf{Comparación embebido vs. colección aparte (muestra de 30\,000 secuencias).}
 Tiempos medidos desde el cliente (mediana de 3 repeticiones); entre
 paréntesis, documentos examinados según \texttt{explain("executionStats")}.}
+\filasalternas
 \begin{tabular}{@{}lrr@{}}
-\toprule
-Métrica & Embebido & Colección aparte \\
-\midrule
+\rowcolor{teOscuro}\cab{Métrica} & \cab{Embebido} & \cab{Colección aparte} \\
 Tiempo de carga (s) & 9.67 & 13.50 \\
 Espacio en disco (MB) & 506.59 & 372.26 (43.90 + 328.37) \\
 Tamaño lógico sin comprimir (MB) & 1128.02 & 1129.43 \\
